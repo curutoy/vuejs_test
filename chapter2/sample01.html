@@ -6,9 +6,50 @@
   <title>Vue.js</title>
 </head>
 <body>
+  <!- 2-2 ->
   <div id="app">
     <p>{{message}}</p>
   </div>
+  <!- 2-7 ->
+  <div id="app2">
+    <a v-bind:href="url">WINGSプロジェクト</a>
+  </div>
+  <!- 2-9 ->
+  <div id="app3">
+    <input type="button" value="クリック" v-bind:disabled="flag" />
+  </div>
+  <!- 2-15 ->
+  <div id="app4">
+    <p>{{ localEmail() }}</p>
+  </div>
+  <!- 2-17 ->
+  <div id="app5">
+    <form>
+      <input type="button" value="クリック" v-on:click="onclick" />
+    </form>
+    <div>算出プロパティ： {{ randomc }}</div>
+    <div>メソッド： {{ randomm() }}</div>
+    <div>現在時刻： {{ current }}</div>
+  </div>
+  <!- 2-21 ->
+  <div id="app6">
+    <p>現在時刻： {{ current.toLocaleString() }}</p>
+  </div>
+  <!- 2-23 ->
+  <div id="app7">
+    <p>著書情報： {{ author.name }} （{{ author.company }}）</p>
+  </div>
+  <!- 2-26 ->
+  <div id="app8">
+    <!- 入力値をnameプロパティにバインディング ->
+    <!- v-model:ユーザーの入力イベントにおいてデータを更新 ->
+    <label>名前：
+      <input type="text" v-model="name" />
+    </label>
+    <p>入力された値：{{upperName}}</p>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="js/sample01.js"></script>
 </body>
