@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="sample02.css">
+  <title>Document</title>
+</head>
+<body>
+  <!- 3-1 ->
+  <div id="app">
+    <!- v-on:イベント名="メソッド名" ->
+    <button v-on:click="onclick">クリック</button>
+    <p>{{ message }}</p>
+  </div>
+  <!- 3-9 ->
+  <div id="app2">
+    <button v-on:click="onclick">クリック</button>
+  </div>
+  <!- 3-15 ->
+  <div id="app3">
+    <!- イベントハンドラーに値を引き渡す場合は、明示的に$event(イベントオブジェクト)を渡して参照する ->
+    <button v-on:click="onclick('ようこそ！', $event)">クリック</button>
+  </div>
+  <!- 3-17 ->
+  <div id="app4">
+    <form>
+      <label for="name">氏名：</label>
+      <!- v-modelディレクティブが双方向データバインディングを実現している ->
+      <!- テキストボックスとデータオブジェクトのmyNameを紐づけている ->
+      <input type="text" id="name" v-model="myName" />
+    </form>
+    <div>こんにちは、 {{ myName }} さん！</div>
+  </div>
+  <!- 3-19 ->
+  <div id="app5">
+    <form>
+      <!- ラジオボタンでは全ての洗濯オプションに対して、同一のv-modelを渡す ->
+      <!- v-modelの値とvalue属性が等しいオプションが選択状態となる ->
+      <label for="dog">いぬ</label>
+      <input type="radio" id="dog" value="いぬ" v-model="pet" />
+      <br />
+      <label for="cat">ねこ</label>
+      <input type="radio" id="cat" value="ねこ" v-model="pet" />
+      <br />
+      <label for="other">その他</label>
+      <input type="radio" id="other" value="その他" v-model="pet" />
+      <br />
+    </form>
+    <p>ペット： {{ pet }}</p>
+  </div>
+  <!- 3-31 ->
+  <div id="app6">
+    <form>
+      <!- あとでイベントハンドラーからアクセスできるように、ref属性で名前をつけておく ->
+      <input ref="upfile" type="file" v-on:change="onchange" />
+    </form>
+    <div>{{ message }}</div>
+  </div>
+  <!- 3-31 ->
+  <div id="app7">
+    <form>
+      <label for="temperature">サウナの温度：</label>
+      <input type="text" id="temperature" v-model.number="temperature" v-on:change="onchange" />
+    </form>
+  </div>
+  <!- 3-39 ->
+  <div id="app8">
+    <form>
+      <label for="mail">メールアドレス：</label>
+      <!- v-on:input="mails=$event.target.value.split(';')"で「テンプレート→データオブジェクト」方向のデータの流れ ->
+      <!- splitメソッドで文字列を分割し、mailsプロパティに反映させる ->
+      <!- v-bind:value="mails.join(';')"で再びjoinメソッドで連結した上でtextarea要素へバインド「データオブジェクト→テンプレート」 ->
+      <textarea id="mail" v-bind:value="mails.join(';')"
+        v-on:input="mails=$event.target.value.split(';')"></textarea>
+    </form>
+    <ul>
+      <li v-for="mail in mails">
+        {{ mail }}
+      </li>
+    </ul>
+  </div>
+  <!- 3-41 ->
+  <div id="app9">
+    <form>
+      <!- チェックボックスをshowに紐付け ->
+      <label for="show">表示/非表示</label>
+      <input type="checkbox" id="show" v-model="show" />
+    </form>
+    <!- showプロパティの値に応じて、パネルの表示を切り替え ->
+    <div id="panel" v-if="show">
+      <h3>RSSフィードについて</h3>
+      <div>WINGSでは、、、</div>
+    </div>
+    <!- falseのときも何か表示したいときにはv-elseを使用する ->
+    <div v-else>非表示です</div>
+  </div>
+  <!- 3-50 ->
+  <div id="app10">
+    <table class="table">
+      <th>No</th><th>ISBN</th><th>署名</th><th>価格</th>
+      <!- 配列booksから順にオブジェクトを取り出し、仮変数bに格納 ->
+      <tr v-for="(b, i) in books">
+        <td>{{ i + 1 }}</td>
+        <td>{{ b.isbn }}</td>
+        <td>{{ b.title }}</td>
+        <td>{{ b.price }}円</td>
+      </tr>
+    </table>
+  </div>
+  <!- 3-57 ->
+  <div id="app11">
+    <table class="table">
+      <th>ISBN</th><th>署名</th><th>価格</th>
+      <!- 配列booksから順にオブジェクトを取り出し、仮変数bに格納 ->
+      <tr v-for="b in expensiveBooks">
+        <td>{{ b.isbn }}</td>
+        <td>{{ b.title }}</td>
+        <td>{{ b.price }}円</td>
+      </tr>
+    </table>
+  </div>
+  <!- 3-60 ->
+  <div id="app12">
+    <template v-for="s in songs">
+      <header>{{ s.title }}</header>
+      <div>{{ s.lyrics }}</div>
+      <footer>{{ s.composer }}作曲</footer>
+    </template>
+  </div>
+  <!- 3-66 ->
+  <div id="app13">
+    <form>
+      <label for="memo">メモ：</label>
+      <input type="text" id="memo" v-bind="attrs" />
+    </form>
+  </div>
+  <!- 3-88 ->
+  <div id="app14">
+    <p v-cloak>{{ message }}</p>
+  </div>
+  <!- 3-91 ->
+  <div id="app15">
+    <div id="main" v-on:contextmenu.prevent>
+      コンテキストメニューは表示されません
+    </div>
+  </div>
+  <!- 3-99 ->
+  <div id="app16">
+    <form>
+      <label for="name">氏名：</label>
+      <!- keyup:キー装飾子。押されたキーの種類に応じて処理を分岐 ->
+      <!- 27はESCキー ->
+      <input type="text" id="name" v-on:keyup.27="clear" v-model="name" />
+    </form>
+  </div>
+  <!- 3-103 ->
+  <div id="app17">
+    <!- クリックに対応して.left.right装飾子でイベントハンドラーに紐づけている ->
+    <!- 右クリックでは既定の動作として、標準のコンテキストメニューが表示されてしまうため、prevent修飾子を付与 ->
+    <div id="main"
+      v-on:click.left="onleftclick"
+      v-on:click.right.prevent="onrightclick">
+      右クリックでコンテキストメニューが表示できます。
+    </div>
+    <!- コンテキストメニューの定義 ->
+    <!- pos: メニューの表示位置 ->
+    <ul class="cxt" v-bind:style="pos" v-show="show">
+      <li><a href="#">ヘルプ</a></li>
+      <li><a href="#">質問掲示板</a></li>
+      <li><a href="#">よくある質問</a></li>
+    </ul>
+  </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="js/sample02.js"></script>
+</body>
+</html>
