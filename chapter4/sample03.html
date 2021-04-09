@@ -6,9 +6,62 @@
   <title>Document</title>
 </head>
 <body>
-  
-  
+  <!- 4-2 ->
+  <div id="app">
+    <my-hello></my-hello>
+  </div>
+  <!- 4-5 ->
+  <div id="app2">
+    <!- 定義済みのmy-helloコンポーネントの呼び出し ->
+    <you-hello your-name="鈴木"></my-hello>
+  </div>
+  <!- 4-7 ->
+  <div id="app3">
+    <my-counter init="0"></my-counter>
+  </div>
+  <!- 4-13 ->
+  <div id="app4">
+    <p>現在値：{{ current }}</p>
+    <!- 親コンポーネント ->
+    <my-counter step="1" v-on:plus="onplus"></my-counter>
+    <my-counter step="2" v-on:plus="onplus"></my-counter>
+    <my-counter step="-1" v-on:plus="onplus"></my-counter>
+  </div>
+  <!- 4-19 ->
+  <div id="app5">
+    <m-hello>鈴木</m-hello>
+  </div>
+  <!- 4-21 ->
+  <div id="app6">
+    <!- template要素とv-slotディレクティブで呼び出し元でもスロット単位にテンプレートを準備する ->
+    <!- template v-slot:埋め込み先スロットの名前 埋め込むコンテンツ template ->
+    <my-slot>
+      <template v-slot:header>
+        <h3>ようこそVue.jsへ</h3>
+      </template>
+      <!- template要素(v-slot)で明示的に指定されなかった要素は既定スロット(name速成のないslot要素)に埋め込まれる ->
+      <p>一緒に勉強しましょう</p>
+      <template v-slot:footer>
+        <span>WINGSプロジェクト</span>
+      </template>
+      <!- template要素(v-slot)で明示的に指定されなかった要素は既定スロット(name速成のないslot要素)に埋め込まれる ->
+      <!- 順序が変わっていても子コンポーネントの順で埋め込まれる ->
+      <p>掲示板へどうぞ</p>
+    </my-slot>
+  </div>
+  <!- 4-25 ->
+  <div id="app7">
+    <my-book>
+      <!- 親コンポーネント ->
+      <!- slotプロパティを受け取るためにv-slotディレクティブを宣言 ->
+      <!- 今回はslotPropと命名しているので、スロットプロパティにはslotProp.プロパティ名でアクセスが可能 ->
+      <template v-slot:default="slotProp">
+        {{slotProp.book.title}} ({{slotProp.book.price}}円)
+      </template>
+    </my-book>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-<script src="js/sample02.js"></script>
+<script src="js/sample03.js"></script>
 </body>
 </html>
