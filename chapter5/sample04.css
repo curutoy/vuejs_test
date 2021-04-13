@@ -1,0 +1,101 @@
+#panel {
+  border: 1px solid #000;
+  width: 350px;
+  overflow: hidden;
+}
+
+/* アニメーション全体の設定 */
+/*
+.v-enter-active,
+.v-leave-active {
+  transition: height 1s;
+}
+/* アニメーション前後のスタイルを設定 */
+/* 表示開始 */
+/*
+.v-enter {
+  height: 0px;
+}
+*/
+/* 表示完了 */
+/*
+.v-enter-to {
+  height: 200px;
+}
+*/
+/* 非表示開始 */
+/*
+.v-leave {
+  height: 200px;
+}
+*/
+/* 非表示完了 */
+/*
+.v-leave-to {
+  height: 0px;
+}
+*/
+
+/* CSS Animationを利用する場合、開始〜終了時点を */
+/* 0~100%としたときのスタイル情報を定義 */
+/* translateX: 水平方向の位置 */
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(100%);
+  }
+  10% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* アニメーションの方法を宣言 */
+
+.panel-enter-active {
+  animation: slide-in 1.5s;
+}
+
+.panel-leave-active {
+  animation: slide-in 1.5s reverse;
+}
+
+/* 5-21 */
+.panel {
+  border: 1px solid #000;
+  width: 350px;
+  overflow: hidden;
+}
+
+.animal-enter-active,
+.animal-leave-active {
+  transition: opacity 5s;
+}
+
+.animal-leave-active {
+  position: absolute;
+}
+
+.animal-enter,
+.animal-leave-to {
+  opacity: 0;
+}
+
+/* 5-29 */
+/* v-moveは、リスト項目が移動対象になったときに付与される */
+.v-enter-active,
+.v-leave-active,
+.v-move {
+  transition: transform 1s;
+}
+
+.v-enter,
+.v-leave-to {
+  transform: translateX(80%);
+}
+
+.v-leave-active {
+  position: absolute;
+}

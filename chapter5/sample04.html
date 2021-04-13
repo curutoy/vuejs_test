@@ -3,11 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="sample04.css">
   <title>Document</title>
 </head>
 <body>
+  <!- 5-1 ->
+  <div id="app">
+    <!- コンポーネントの表示領域をcomponent要素で準備 ->
+    <!- 表示すべきコンポーネントはis属性で表す ->
+    <!- currentBannerプロパティの値によって、表示するコンポーネントを決定する ->
+    <component v-bind:is="currentBanner" />
+  </div>
+
+  <!- 5-5 ->
+  <div id="app2">
+    <div id="container">
+      <!- タブを列挙 ->
+      <ul>
+        <!- 予め用意しておいたタブリストを基にタブを生成 ->
+        <li v-for="tab in tabNames">
+          <a href="#" v-on:click.prepend="onclick(tab)">{{ tabs[tab] }}</a>
+        </li>
+      </ul>
+      <!- タブパネルを準備 ->
+      <!- keep-alive要素でcomponentを括ることで、非アクティブになったコンポーネントを内部的に維持しておくことができる ->
+      <!- keep-aliveなしだと、動的コンポーネントは、コンポーネント変更時に不要になったコンポーネントを破棄するため入力消える ->
+      <keep-alive>
+        <component v-bind:is="currentTab"></component>
+      </keep-alive>
+    </div>
+  </div>
+
+  <!- 5-7 ->
+  <div id="app3">
+    <my-input v-model="message"></my-input>
+    <!- 上記のv-model="message"はv-bind:value="message" v-on:input="message = $event"と同じ意味 ->
+    <p>入力値：{{ message }}</p>
+  </div>
+
+  <!- 5-9 ->
+  <div id="app4">
+    <!- valueプロパティを同期化 ->
+    <!- v-modelと.sync修飾子は同じ役割を持つ ->
+    <my-input2 v-bind:value.sync="message"></my-input2>
+    <!- 上記のv-bind:value.sync="message"はv-bind:value="message" v-on:update="message = $event"と同じ意味 ->
+    <p>入力値：{{ message }}</p>
+  </div>
+
+  <!- 5-11 ->
+  <div id="app5">
+    <input type="button" value="表示／非表示" v-on:click="onclick" />
+    <!- アニメーションを有効にするにはß、まず対象の要素をtransition要素で括る ->
+    <!- transition要素の直下は、単一の要素でなければならない ->
+    <transition mode="out-in" name="panel">
+      <div id="panel" v-if="flag" key="p1">
+        WINGSプロジェクトで一緒に執筆の仕事をしてみませんか？<br />
+        ただいまメンバー募集中！
+      </div>
+      <div id="empty" v-else key="p2">
+        パネルは非表示です
+      </div>
+    </transition>
+  </div>
+
+  <!- 5-19 ->
+  <div id="app6">
+    <input type="button" value="切り替え" v-on:click="onclick" />
+    <transition name="animal">
+      <!- キーとなる情報は、アニメーション対象のkey属性にバインドしておく ->
+      <!- idプロパティをkey属性にバインド ->
+      <!- keyの変化によって、アニメーションが発動する ->
+      <div class="panel" v-bind:key="id">
+        {{ panels[id] }}
+      </div>
+    </transition>
+  </div>
+
+  <!- 5-24 ->
+  <div app="app7">
+    <h3 class="animate__animated animate__bounce">表示？</h3>
+    <input type="button" value="表示／非表示" v-on:click="onclick" />
+    <transition
+      enter-active-class="animate__animated animate__rollIn" 
+      leave-active-class="animate__animated animate__rollOut">
+      <div id="panel" v-show="flag">
+        WINGSプロジェクトで一緒に執筆の仕事をしてみませんか？<br />
+        ただいまメンバー募集中！<br />
+        是非、ご応募ください。
+      </div>
+    </transition>
+  </div>
+
+  <!- 5-27 ->
+  <div id="app8">
+    <div id="list">
+      <form>
+        <label for="todo">やること</label>
+        <input id="todo" type="text" size="40" v-model="todo" /><br />
+        <input type="button" value="追加" v-on:click="onadd" />
+        <input type="button" value="削除" v-on:click="onremove" />
+        <input type="button" value="ソート" v-on:click="onsort" />
+      </form>
+      <!- リストにアニメーション効果を適用 ->
+      <!- transition-group要素は、複数の要素を束ねるコンテナ ->
+      <!- transition要素とは異なり、実際にタグを出力するため、tag属性を宣言 ->
+      <transition-group tag="ul">
+        <!- 配下の要素を区別できるようにkey属性を明示的に宣言 ->
+        <li v-for="item in items" v-bind:key="item">{{ item }}</li>
+      </transition-group>
+    </div>
+  </div>
+
+  <!- 5-33 ->
+  <div id="app9">
+    <hello></hello>
+  </div>
+  <!- x-templateはVue.jsによってマウントされた要素の外に書く ->
+  <!- script要素のtype属性、id属性は必須 ->
+  <!- type属性はtext/x-templateで固定 ->
+  <script type="text/x-template" id="hello">
+    <div>こんにちは、{{ name }}！</div>
+  </script>
+
+  <!- 5-37 ->
+  <div id="app10">
+    <!- my-loadingコンポーネントではtype属性の値によってテンプレートが入れ替わる ->
+    <my-loading type="text"></my-loading>
+  </div>
+
+  <!- 5-39 ->
+  <div id="app11">
+    <my-random v-bind:min="0" v-bind:max="100"></my-random>
+  </div>
   
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-<script src="js/sample03.js"></script>
+<script src="js/sample04.js"></script>
 </body>
 </html>
