@@ -2,13 +2,192 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="sample05.css">
   <title>Document</title>
 </head>
 <body>
+  <!- 6-1 ->
+  <div id="app">
+    一緒に働きませんか？<span v-highlight="color">
+    メンバー募集中！</span>是非ご応募ください！
+  </div>
+
+  <!- 6-3 ->
+  <div id="app2">
+    <!- colorプロパティ経由でハイライトカラーを変化 ->
+    <select v-model="color">
+      <option value="yellow">黄色</option>
+      <option value="red">赤色</option>
+      <option value="blue">青色</option>
+    </select>
+    <p>一緒に働きませんか？
+    <span v-highlight2="color">メンバー募集中！</span>
+    是非ご応募ください！</p>
+  </div>
+
+  <!- 6-9 ->
+  <div id="app3">
+    <select v-model="color">
+      <option value="yellow">黄色</option>
+      <option value="red">赤色</option>
+      <option value="blue">青色</option>
+    </select>
+    <!- border:ハイライト時に枠線を付与 ->
+    <!- once:ハイライトを反映するのは最初の一度だけ ->
+    <p>一緒に働きませんか？
+    <span v-highlight3.border.once="color">メンバー募集中！</span>
+    是非ご応募ください！</p>
+  </div>
+
+  <!- 6-11 ->
+  <div id="app4">
+    <!- 引数を変更すれば、ハイライトの表現も変化する ->
+    一緒に働きませんか？<span v-highlight4:border="color">
+    メンバー募集中！</span>是非ご応募ください！
+  </div>
   
+  <!- 6-13 ->
+  <div id="app5">
+    一緒に働きませんか？<span v-highlight5="color">
+    メンバー募集中！</span>是非ご応募ください！
+  </div>
+
+  <!- 6-14 ->
+  <div id="app6">
+    <div id="editor" v-markdown="options">
+      ### WINGSプロジェクト
+      
+      ただいま**メンバー募集中**です。
+      既存メンバーは、SE、~医師~、主婦など様々です。
+      主なお仕事は以下の通り。
+      
+      + 書籍の執筆
+      + 雑誌記事の執筆
+      + Web記事の執筆
+    </div>
+  </div>
+
+  <!- 6-16 ->
+  <div id="app7">
+    <!- 定義したtrimフィルターを「式 | フィルター」の形で呼び出す ->
+    <div v-bind:title="str | trim">str:「{{ str | trim }}」</div>
+  </div>
+
+  <!- 6-18 ->
+  <div id="app8">
+    <textarea v-model="memo" cols="30" rows="10"></textarea>
+    <!- nl2brフィルターを呼び出し ->
+    <!- v-htmlではフィルター構文を利用できないため、->
+    <!- v-bindディレクティブの.prop修飾子でinnnerHtmlプロパティを呼び出す ->
+    <!- .propはプロパティに値をバインドする ->
+    <div v-bind:inner-html.prop="memo | nl2br"></div>
+  </div>
+
+  <!- 6-20 ->
+  <div id="app9">
+    <textarea v-model="memo" cols="30" rows="10"></textarea>
+    <!- truncateフィルターを呼び出し ->
+    <div>{{ memo | truncate }}</div>
+    <div>{{ memo | truncate(20, '〜') }}</div>
+  </div>
+
+  <!- 6-24 ->
+  <div id="app10">
+    <form>
+      <label for="name">氏名：</label>
+      <!- form要素に検証ルールを適用 ->
+      <!- VeeValidateによる検証は、まずname属性とsata-vv-as属性を指定する ->
+      <!- name属性：VeeValidateがフォーム要素を識別するためのキー ->
+      <!- data-vv-as属性はエラ〜メッセージを表示する際に利用する日本語の表示名 ->
+      <!- v-validateディレクティブ(属性)で検証ルールを宣言 ->
+      <!- 検証ルールを尾パイプ区切りで列挙 ->
+      <!- required；必須,max：最大 ->
+      <input  v-validate="'required|max: 10'"
+        id="name" name="name" />
+      <span v-show="errors.has('name')">{{ errors.first('name') }}</span><br />
+      <label for="age">年齢：</label>
+      <!- numeric：数値か,between：20~60文字の範囲 ->
+      <input v-validate="{ numeric:true, between: [20, 60] }"
+        id="age" name="age"  type="number" />
+      <span v-show="errors.has('age')">{{ errors.first('age') }}</span><br />
+      <label for="sex">性別：</label>
+      <!- included：いずれか ->
+      <!- 複数の値を受け取るルールでは、オブジェクト形式で配列として値を渡す ->
+      <!- ↑v-validate="'{ included: ['男', '女', 'その他'] }" data-vv-as="性別" ->
+      <select v-validate="'included:男,女,その他'" id="sex" name="sex">
+        <option value="男" selected>男性</option>
+        <option value="女">女性</option>
+        <option value="その他">その他</option>
+      </select>
+      <!- 検証結果を参照する ->
+      <!- 検証結果はerrorプロパティで取得ができる ->
+      <!- hasメソッドで指定されたフォーム要素でエラーがあるかどうかを判定し、 ->
+      <!- 存在する場合、firstメソッドで最初のメッセージを表示 -> 
+      <span v-show="errors.has('sex')">{{ errors.first('sex') }}</span><br />
+    </form>
+  </div>
+
+  <!- 6-26 ->
+  <div id="app11">
+    <form>
+      <label for="memo">メモ：</label>
+      <textarea name="memo" id="memo" cols="30" rows="10"
+       v-validate="'ngword:暴力,グロ,エロ'"></textarea>
+      <span v-show="errors.has('memo')">{{ errors.first('memo') }}</span>
+    </form>
+  </div>
+
+  <!- 6-30 ->
+  <div id="app12">
+    <!- 個々のコンポーネントの呼び出し ->
+    <!- interval:自動移動の間隔(ミリ秒) ->
+    <!- arrow:左右矢印を表示するか(always/hover(ホバー時のみ)/never) ->
+    <el-carousel :interval="5000" arrow="hover">
+      <!- 個々のカルーセル要素を列挙 ->
+      <el-carousel-item>
+        <div>
+          <h3>プロジェクト</h3>
+          <p>ようこそ！</p>
+        </div>
+      </el-carousel-item>
+      <el-carousel-item>
+        <div>
+          <h3>メンバー募集中！</h3>
+          一緒に執筆のお仕事をしてみませんか？<br />
+          現在、WINGSでは執筆メンバーを募集しています。
+        </div>
+      </el-carousel-item>
+      <el-carousel-item>
+        <div>
+          <h3>What's New</h3>
+          WINGSの最新情報です。<br />
+          RSSでも配信しています。是非ご覧ください。<br />
+          <a href="#">最新情報一覧</a>
+        </div>
+      </el-carousel-item>
+    </el-carousel>
+  </div>
+
+  <!- 6-33 ->
+  <div id="app13">
+    <!- 定義したtrimフィルターを「式 | フィルター」の形で呼び出す ->
+    <div v-bind:title="str | trim">str:「{{ str | trim }}」</div>
+  </div>
+
+  <!- 6-36 ->
+  <div id="app14">
+    <my-comp></my-comp>
+  </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-<script src="js/sample04.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!- import JavaScript ->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!- VeeValidateプラグインをインポート ->
+<script src="https://cdn.jsdelivr.net/npm/vee-validate@2.2.15/dist/vee-validate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vee-validate@2.2.15/dist/locale/ja.js"></script>
+<script src="js/sample05.js"></script>
 </body>
 </html>
