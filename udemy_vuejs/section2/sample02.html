@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="sample02.css">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app1">
+    <p>{{ message }}</p> <!- 1 ->
+    <!- v-once:一度描画されたらその後は変化させない ->
+    <!- methodsでの書き換えが反映されていない ->
+    <p v-once>{{ message }}</p>
+    <p>{{ sayHi() }}</p> 
+    <!- 1と全く同じ意味 ->
+    <!- v-textの後ろにくる文字がそのままマシュタッシュ構文となる ->
+    <p v-text="message"></p>
+  </div>
+
+  <div id="app2">
+    <div>{{ html }}</div>
+    <!- h1を文字列に判例させたい ->
+    <!- 脆弱性があるたm、ユーザーから提供されたコンテンツをそのまま置かない！ ->
+    <div v-html="html"></div>
+  </div>
+
+  <div id="app3">
+    <!- v-bindは引数をとることができる ->
+    <!- v-bind:属性 ->
+    <!- v-bindは属性に対してプロパティを使って表示させる ->
+    <a v-bind:href="url">Google</a>
+    <!- v-bindは省略可能 ->
+    <a :href="url">Google</a>
+    <!- hrefを動的に表現する ->
+    <a :[attribute]="url">Google</a>
+    <!- 引数が膨大になるとコードが冗長となってしまうため、オブジェクトにまとめる ->
+    <a v-bind="{href: urlTwitter, id: number}">Twitter</a> <!- 2 ->
+    <!- 2と全く同じ意味だが、冗長なので、js側でオブジェクトを書くこともできる ->
+    <a v-bind="twitterObject">Twitter</a>
+  </div>
+
+  <div id="app4">
+    <p>現在、{{ number }}回クリックされています</p>
+    <!- v-onは引数を持つ ->
+    <!- イベントが発生した瞬間に関数wp実行したいときにv-onを使う ->
+    <!- v-onの後ろにはイベントをいれる ->
+    <button v-on:click="countUp(2)">カウントアップ</button>
+    <!- prevent:イベント修飾子。デフォルトの挙動を妨げる ->
+    <!- js側でevent.preventDefault()を書いても同じ ->
+    <a v-on:click.prevent="" href="https://google.com">Google</a>
+    <!- mousemoveは少しでもマウスが動いたらイベントが発火する ->
+    <! 引数とeventオブジェクトを持ちたいときは$eventを使う ->
+    <!- 例えば、X,Y軸を10で割った数を求めたいとき ->
+    <!- stop：イベント修飾子。その部分だけmousemoveを反応させないようにする ->
+    <!- js側でstopPropagation()を書いても同じ ->
+    <p v-on:mousemove="changeMousePosition(10, $event)">マウスを載せてください
+      <span v-on:mousemove.stop>反応しないでください</span></p>
+    <p>X:{{x}}、Y:{{y}}</p>
+    <!- keyup：キーボードを離したときにイベント発火 ->
+    <!- enter：キー修飾子。エンターを離した時のみイベント発火 ->
+    <input type="text" v-on:keyup.enter="myAlert">
+  </div>
+
+  <div id="app5">
+    <p>現在{{ number }}回クリックされています</p>
+    <!- v-onディレクティブは第一引数であるDOMイベントを動的にとることができる ->
+    <!- v-onディレクティブも省略可能 v-on: = @ ->
+    <button @[event]="countUp">カウントアップ</button>
+  </div>
+
+  <div id="app6">
+    <!- v-modelを記載することで、モデル側のmessageが反映される(バインディング) ->
+    <!- 逆に入力欄に記載したmessageもモデル側に反映できる(双方向バインディング) ->
+    <input type="text" v-model="message">
+    <h1>{{ message }}</h1>
+  </div>
+
+  <div id="app7">
+    <p>{{ counter }}</p>
+    <button @click="counter += 1">+1</button>
+    <p>{{ otherCounter }}</p>
+    <button @click="otherCounter += 1">別+1</button>
+    <p>{{ lessThanThree }}</p>
+    <!- {{}}のなかにメソッドを記載すると、描画のたびに実行されてしまう ->
+    <p>{{ lessThanThreeMethods() }}</p>
+  </div>
+
+  <div id="app8">
+    <p>{{ counter }}</p>
+    <button @click="counter += 1">+1</button>
+    <p>{{ lessThanThree }}</p>
+  </div>
+  
+  <div id="app9">
+    <p>{{ counter }}</p>
+    <!- DOMイベントでメソッドを指定するときは、()付けても付けなくてもOK ->
+    <!- メソッドイベントハンドラー ->
+    <button @click="countUp">+1</button>
+    <!- javascriptの書き方 ->
+    <button @click="countUp()">+1</button>
+    <!- computedプロパティは()付けない ->
+    <p>{{ doubleCounterComputed }}</p>
+    <!- メソッドは()つける ->
+    <p>{{ doubleCounterMethod() }}</p>
+  </div>
+
+  <div id="app10">
+    <!- ケバブケースで書く場合は''が必要 ->
+    <h1 :class="classObject">Hello</h1>
+    <button @click="isActive = !isActive">切り替え</button>
+    <!- classを動的に書く ->
+    <h1 :class="[color, bg]">こんにちは</h1>
+    <h1 :class="[{red: isActive}, bg]">こんにちは</h1>
+  </div>
+
+   <div id="app11">
+     <!- インラインスタイルのバインディング ->
+     <!- バインドをオブジェクト形式で書く ->
+   <h1 :style="{color: textColor, 'background-color': bgColor}">Hello</h1>
+   <h1 :style="styleObject">Hello</h1>
+   <! 指定したいオブジェクトが複数ある場合に配列を使う ->
+   <h1 :style="[styleObject, baseStyle]">Hello</h1>
+   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="js/sample02.js"></script>
+</body>
+</html>
