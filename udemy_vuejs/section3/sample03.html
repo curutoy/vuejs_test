@@ -6,6 +6,100 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="app1">
+    <p v-if="ok">ok!</p>
+    <!- okがfalse,maybeokがtrueに場合に表示 ->
+    <!- elsifみたいなもの ->
+    <p v-else-if="maybeok">Maybe Ok</p>
+    <!- v-elseはv-ifのすぐ後に来る必要がある ->
+    <!- okとmaybeokどちらもfalseだった場合に表示される ->
+    <p v-else>Not ok...</p>
+    <!- templateは検証で確認すると表示されない ->
+    <!- v-ifで複数表示したいときなどに使う ->
+    <!- v-ifは切り替えで毎回要素を削除するため ->
+    <!- v-showに比べて切り替え速度が遅い ->
+    <template v-if="hello">
+      <p>Hello</p>
+      <p>こんにちは</p>
+      <p>If</p>
+    </template>
+    <!- v-ifと全く同じ表現ができる ->
+    <!- v-ifがfalseとなったときに検証からも消えるのに対して、 ->
+    <!- v-showは残る。cssでdisplay:noneとなっているだけ ->
+    <!- v-showはテンプレートで使うことはできない ->
+    <!- templateは表示されないものなのでdisplay:noneにするものがないため ->
+    <!- v-showにはelseがない ->
+    <!- v-showはv-ifに比べて初期描画のコストが高い ->
+    <!- とても頻繁にtrueとfalseを切り替える必要があるものはv-showを使った方が良い ->
+    <p v-show="hello">Show</p>
+    <button @click="hello = !hello">切り替え</button>
+  </div>
+
+  <div id="app2">
+    <ul>
+      <!- 配列に対してv-forを利用する ->
+      <!- レンダリングする際にfruitsの中の１つずつを取得してfruitに当てはめている ->
+      <li v-for="fruit in fruits">{{fruit}}</li>
+    </ul>
+    <ul>
+      <!- 第二引数にindexを入れて番号を付与することもできる ->
+      <li v-for="(fruit, index) in fruits">({{index}}){{fruit}}</li>
+    </ul>
+    <ul>
+      <!- オブジェクトに対してv-forを利用する ->
+      <!- valueの値を撮ってくる ->
+      <!- 撮ってくる順番が保証されていないので、順番を気にする場合は配列を使用する ->
+      <li v-for="value in object">{{value}}</li>
+    </ul>
+    <ul>
+      <!- オブジェクトの場合、第二引数はindexではなくkeyをとる ->
+      <!- indexを取りたい場合は、第3引数で指定する ->
+      <li v-for="(value, key, index) in object">({{index}}){{key}}-{value}}</li>
+    </ul>
+    <ul>
+      <!- ブロックでレンダリングしたい場合にはtemplateを使用する ->
+      <template v-for="fruit in fruits">
+        <li>{{fruit}}</li>
+        <hr>
+      </template>
+    </ul>
+    <ul>
+      <!- v-forは整数値をとることもできる ->
+      <li v-for="n in 10">{{n}}</li>
+    </ul>
+    <ul>
+      <!- v-forのinはofに書き換えることもできる ->
+      <li v-for="n of 10">{{n}}</li>
+    </ul>
+  </div>
+
+  <div id="app3">
+    <ul>
+      <!- v-forの問題点 ->
+      <!- 要素の移動を最小限に抑えるアルゴリズムを使用し、 ->
+      <!- 可能な限り同じタイプの要素を再利用しようとする ->
+      <!- この例でinputにtextを入力し、buttonをクリックすると、 ->
+      <!- fruitは先頭のりんごが消えるものの、 ->
+      <!- inputタグは全て同じなので、一番下に書かれたinputが削除される ->
+      <div v-for="fruit in fruits">
+        <p>{{fruit}}</p>
+        <input type="text">
+      </div>
+    </ul>
+    <button @click="remove">先頭を削除</button>
+    <ul>
+      <!- v-forディレクティブを使用する際は必ずkey属性をつける！ ->
+      <!- key属性を使用 ->
+      <!- templateではkey属性を使用することはできないのでdivを使用する ->
+      <!- ブロックにkeyを付けて差別化することで、inputに入力した値も先頭が削除される ->
+      <div v-for="fruit in fruits" :key="fruit">
+        <p>{{fruit}}</p>
+        <input type="text">
+      </div>
+    </ul>
+    <button @click="remove">先頭を削除</button>
+    </ul>
+  </div>
   
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
   <script src="js/sample03.js"></script>
