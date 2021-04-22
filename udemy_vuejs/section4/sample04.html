@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <p>{{message}}</p>
+    <p>{{name}}</p>
+    <button @click="message = 'ボタンから変更'">変更</button>
+    <p>{{Myobject}}</p>
+    <!- コンポーネントを表示 ->
+    <hello></hello>
+    <hello></hello>
+  </div>
+  <div id="app2">
+    <p>{{message}}</p>
+  </div>
+  <div id="app3">
+  </div>
+  <div id="app4">
+  </div>
+  <div id="app5">
+    <h1>こんにちは{{name}}ちゃん</h1>
+    <button @click="name = 'chop'">名前を変更</button>
+    <button @click="destroy">インスタンスを破壊</button>
+  </div>
+  <!- 複数下記コードを記載しても一度しか表示されない ->
+  <!- Vueインスタンスは最初に該当したもの以降はレンダリングしない性質があるため ->
+  <div class="hello">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="js/sample04.js"></script>
+</body>
+</html>
